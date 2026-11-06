@@ -3,20 +3,347 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Práctica 2 - Sitio Web Estático</title>
+    <title>CloudNova | Soluciones Cloud & DevOps</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; background-color: #f4f6f9; }
-        .card { background: white; padding: 30px; border-radius: 8px; display: inline-block; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        h1 { color: #0078d4; }
-        .badge { background-color: #107c41; color: white; padding: 5px 10px; border-radius: 4px; font-weight: bold; }
+        :root {
+            --primary: #0078d4;
+            --primary-hover: #005a9e;
+            --accent: #00d2ff;
+            --bg-dark: #090d16;
+            --bg-card: #111827;
+            --border: #1f293d;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* Barra de navegación */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 8%;
+            background: rgba(9, 13, 22, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #38bdf8, #0078d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .btn-cta {
+            background: linear-gradient(135deg, #0078d4, #005a9e);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0, 120, 212, 0.35);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 120, 212, 0.5);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 160px 8% 100px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(0, 120, 212, 0.25) 0%, rgba(9, 13, 22, 0) 70%);
+            z-index: -1;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(0, 120, 212, 0.15);
+            border: 1px solid rgba(0, 120, 212, 0.4);
+            color: #38bdf8;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 20px;
+            letter-spacing: -0.03em;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, #ffffff 40%, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            max-width: 680px;
+            margin: 0 auto 36px;
+            color: var(--text-muted);
+            font-size: 1.15rem;
+            line-height: 1.6;
+        }
+
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Métricas */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            padding: 40px 8%;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            background: rgba(17, 24, 39, 0.4);
+            flex-wrap: wrap;
+        }
+
+        .stat-item h3 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .stat-item p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Características / Servicios */
+        .features {
+            padding: 100px 8%;
+            text-align: center;
+        }
+
+        .section-header {
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 28px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 36px 28px;
+            border-radius: 14px;
+            text-align: left;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(56, 189, 248, 0.4);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 18px;
+            display: inline-block;
+            padding: 12px;
+            border-radius: 10px;
+            background: rgba(0, 120, 212, 0.1);
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 8%;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 2.5rem; }
+            .stats { gap: 30px; }
+        }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>Práctica 2: Sitio Web Estático en Azure</h1>
-        <p><strong>Estudiante:</strong> Angel Julian Gelvez Piedrahita</p>
-        <p><strong>Materia:</strong> Administración de Cómputo en la Nube</p>
-        <p><strong>Estado:</strong> <span class="badge">Versión 2.0 - Despliegue Automatizado con CI/CD</span></p>
-    </div>
+
+    <!-- Navegación -->
+    <nav>
+        <a href="#" class="logo">⚡ CloudNova</a>
+        <ul class="nav-links">
+            <li><a href="#caracteristicas">Características</a></li>
+            <li><a href="#metricas">Métricas</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+        </ul>
+        <a href="#contacto" class="btn-cta">Comenzar</a>
+    </nav>
+
+    <!-- Sección Hero -->
+    <section class="hero">
+        <span class="badge">🚀 Infraestructura en la Nube & Automatización</span>
+        <h1>Despliega en minutos,<br><span>escala sin límites.</span></h1>
+        <p>Acelera la entrega de tus aplicaciones web estáticas y microservicios con pipelines de CI/CD automatizados y alta disponibilidad en Azure.</p>
+        <div class="hero-actions">
+            <a href="#contacto" class="btn-cta">Probar ahora</a>
+            <a href="#caracteristicas" class="btn-secondary">Conocer más</a>
+        </div>
+    </section>
+
+    <!-- Barra de Métricas -->
+    <section class="stats" id="metricas">
+        <div class="stat-item">
+            <h3>99.99%</h3>
+            <p>Disponibilidad SLA</p>
+        </div>
+        <div class="stat-item">
+            <h3>< 20s</h3>
+            <p>Tiempo de despliegue</p>
+        </div>
+        <div class="stat-item">
+            <h3>100%</h3>
+            <p>Serverless & Escalable</p>
+        </div>
+        <div class="stat-item">
+            <h3>Global</h3>
+            <p>Red de distribución CDN</p>
+        </div>
+    </section>
+
+    <!-- Características -->
+    <section class="features" id="caracteristicas">
+        <div class="section-header">
+            <h2>Todo lo necesario para tu infraestructura</h2>
+            <p>Diseñado para desarrolladores que buscan velocidad y estabilidad en producción.</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">☁️</div>
+                <h3>Azure Blob Hosting</h3>
+                <p>Almacenamiento directo en el contenedor <code>$web</code> optimizado para servir contenido estático con la menor latencia del mercado.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🔄</div>
+                <h3>CI/CD Integrado</h3>
+                <p>Automatización continua con GitHub Actions. Cada <code>git push</code> ejecuta pruebas y actualiza el entorno en tiempo real.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Monitoreo Proactivo</h3>
+                <p>Métricas de transacciones, ancho de banda de salida (egress) y alertas en tiempo real desde el portal de nube.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pie de página -->
+    <footer id="contacto">
+        <p>© 2026 CloudNova. Práctica de Infraestructura en la Nube.</p>
+    </footer>
+
 </body>
 </html>
