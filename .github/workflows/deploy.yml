@@ -1,0 +1,20 @@
+name: Despliegue Continuo a Azure Blob Storage
+
+on:
+  push:
+    branches:
+      - main
+      - principal
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Sincronizar con Azure Blob Storage
+        uses: azure/CLI@v2
+        with:
+          inlineScript: |
+            az storage blob sync -c '$web' -s . --connection-string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}"
