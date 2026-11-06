@@ -13,10 +13,13 @@ jobs:
       - name: Descargar repositorio
         uses: actions/checkout@v4
 
-      - name: Instalar Azure CLI y Sincronizar con $web
+      - name: Sincronizar con Azure Blob Storage
+        env:
+          AZURE_CONN_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
         run: |
-          az storage blob sync \
+          az storage blob upload-batch \
+            --account-name sitioestaticopacman26ca \
+            --connection-string "$AZURE_CONN_STRING" \
+            --destination '$web' \
             --source . \
-            --container '$web' \
-            --connection-string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" \
-            --exclude-path ".git/*" ".github/*"
+            --overwrite true
