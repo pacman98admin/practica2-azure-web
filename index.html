@@ -1,22 +1,22 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Práctica 2 - Sitio Web Estático</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; background-color: #f4f6f9; }
-        .card { background: white; padding: 30px; border-radius: 8px; display: inline-block; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        h1 { color: #0078d4; }
-        .badge { background-color: #107c41; color: white; padding: 5px 10px; border-radius: 4px; font-weight: bold; }
-    </style>
-</head>
-<body>
-    <div class="card">
-        <h1>Práctica 2: Sitio Web Estático en Azure</h1>
-        <p><strong>Estudiante:</strong> Angel Julian Gelvez Piedrahita</p>
-        <p><strong>Materia:</strong> Administración de Cómputo en la Nube</p>
-        <p><strong>Estado:</strong> <span class="badge">Versión 2.0 - Despliegue Automatizado con CI/CD</span></p>
-    </div>
-</body>
-</html>
+name: Despliegue Continuo a Azure Blob Storage
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar codigo del repositorio
+        uses: actions/checkout@v4
+
+      - name: Subir archivos a Azure Blob Storage
+        run: |
+          az storage blob upload-batch \
+            --connection-string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" \
+            --destination '$web' \
+            --source . \
+            --pattern "*" \
+            --overwrite
